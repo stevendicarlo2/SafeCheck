@@ -1,27 +1,67 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
 import { StackNavigator } from "react-navigation";
 
 class SendAlertScreen extends React.Component {
   static navigationOptions = {
     title: "Send Alert"
   };
+  constructor(props) {
+    super(props);
+    this.state = { isLoading: true, data: "" };
+  }
+  sendAlert(emergency) {
+    var params = {
+      lat: 38.031,
+      long: -78.511,
+      phone: "2032473306",
+      emergency: emergency
+    };
+    var formData = [];
+
+    for (var property in params) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(params[property]);
+      formData.push(encodedKey + "=" + encodedValue);
+    }
+    formData = formData.join("&");
+
+    fetch("http://35.227.69.77/api/alert/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: formData
+    });
+  }
   render() {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
         <TouchableOpacity
           style={styles.alertButton}
           title="Local"
-          onPress={() => {}}
+          onPress={() => {
+            this.sendAlert(false);
+          }}
         >
           <Text style={styles.alertText}>Local</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.redButton}
           title="Emergency"
-          onPress={() => {}}
+          onPress={() => {
+            this.sendAlert(true);
+          }}
         >
           <Text style={styles.alertText}>Emergency</Text>
+          <Text>{this.state.data}</Text>
         </TouchableOpacity>
       </View>
     );
