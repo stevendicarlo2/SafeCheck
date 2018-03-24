@@ -15,31 +15,38 @@ class SendAlertScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { isLoading: true, data: "" };
+    console.log(this.state);
   }
+
   sendAlert(emergency) {
-    var params = {
-      lat: 38.031,
-      long: -78.511,
-      phone: "2032473306",
-      emergency: emergency
-    };
-    var formData = [];
+    navigator.geolocation.getCurrentPosition(
+      function(pos) {
+        var params = {
+          lat: pos.coords.latitude,
+          long: pos.coords.longitude,
+          phone: "2032473306",
+          emergency: emergency
+        };
+        var formData = [];
 
-    for (var property in params) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(params[property]);
-      formData.push(encodedKey + "=" + encodedValue);
-    }
-    formData = formData.join("&");
+        for (var property in params) {
+          var encodedKey = encodeURIComponent(property);
+          var encodedValue = encodeURIComponent(params[property]);
+          formData.push(encodedKey + "=" + encodedValue);
+        }
+        formData = formData.join("&");
 
-    fetch("http://35.227.69.77/api/alert/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/x-www-form-urlencoded"
+        fetch("http://35.227.69.77/api/alert/", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: formData
+        });
       },
-      body: formData
-    });
+      function() {}
+    );
   }
   render() {
     return (
