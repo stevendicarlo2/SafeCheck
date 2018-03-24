@@ -27,7 +27,7 @@ const RootNav = StackNavigator(
     SendAlert: { screen: SendAlertScreen }
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "SendAlert"
   }
 );
 
