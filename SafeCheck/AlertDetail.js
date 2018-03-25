@@ -106,8 +106,7 @@ class AlertDetailScreen extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          <Text>Medical Emergency</Text>
-          <Text>
+          <Text style={styles.item}>
             Description:{" "}
             {this.props.navigation.state.params.event.description ? (
               this.props.navigation.state.params.event.description
@@ -115,7 +114,7 @@ class AlertDetailScreen extends React.Component {
               "None"
             )}
           </Text>
-          <Text>
+          <Text style={styles.item}>
             Location Detail:{" "}
             {this.props.navigation.state.params.event.location_detail ? (
               this.props.navigation.state.params.event.location_detail
@@ -123,7 +122,9 @@ class AlertDetailScreen extends React.Component {
               "None"
             )}
           </Text>
-          <Text>Phone: {this.props.navigation.state.params.event.phone}</Text>
+          <Text style={styles.item}>
+            Phone: {this.props.navigation.state.params.event.phone}
+          </Text>
         </View>
       );
     }
