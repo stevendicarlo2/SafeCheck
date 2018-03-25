@@ -9,6 +9,7 @@ import {
   FlatList,
   Button
 } from "react-native";
+import { NavigationActions } from "react-navigation";
 
 class AlertDetailScreen extends React.Component {
   static navigationOptions = {
@@ -44,6 +45,15 @@ class AlertDetailScreen extends React.Component {
         body: formData
       });
     });
+    const showUserAlertAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: "SendAlert"
+        })
+      ]
+    });
+    this.props.navigation.dispatch(showUserAlertAction);
   }
   render() {
     console.log(this.props);
