@@ -54,6 +54,7 @@ class InstitutionAlertScreen extends React.Component {
             ? " Emergency: " + item.description
             : " Local: " + item.description)
         }
+        color={item.emergency ? "red" : "blue"}
         onPress={() => this.renderDetail(item)}
       />
     );
