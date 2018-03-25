@@ -4,7 +4,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage
 } from "react-native";
 
 class SendAlertScreen extends React.Component {
@@ -16,36 +17,44 @@ class SendAlertScreen extends React.Component {
     this.state = { isLoading: true, data: "" };
     console.log(this.state);
   }
+  get_phone_number() {
+    try {
+    } catch (error) {
+      console.log("could not retrieve number");
+    }
+  }
 
   sendAlert(emergency) {
-    navigator.geolocation.getCurrentPosition(
-      function(pos) {
-        var params = {
-          lat: pos.coords.latitude,
-          long: pos.coords.longitude,
-          phone: "2032473306",
-          emergency: emergency
-        };
-        var formData = [];
+    AsyncStorage.getItem("@MySuperStore:phoneNumber").then(phone => {
+      navigator.geolocation.getCurrentPosition(
+        function(pos) {
+          var params = {
+            lat: pos.coords.latitude,
+            long: pos.coords.longitude,
+            phone: phone,
+            emergency: emergency
+          };
+          var formData = [];
 
-        for (var property in params) {
-          var encodedKey = encodeURIComponent(property);
-          var encodedValue = encodeURIComponent(params[property]);
-          formData.push(encodedKey + "=" + encodedValue);
-        }
-        formData = formData.join("&");
+          for (var property in params) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(params[property]);
+            formData.push(encodedKey + "=" + encodedValue);
+          }
+          formData = formData.join("&");
 
-        fetch("http://35.227.69.77/api/alert/", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: formData
-        });
-      },
-      function() {}
-    );
+          fetch("http://35.227.69.77/api/alert/", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: formData
+          });
+        },
+        function() {}
+      );
+    });
   }
   render() {
     return (
