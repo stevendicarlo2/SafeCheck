@@ -9,14 +9,16 @@ import {
 import { StackNavigator } from "react-navigation";
 import SendAlertScreen from "./SendAlert.js";
 import InstitutionAlertScreen from "./InstitutionAlerts.js";
+import AlertDetailScreen from "./AlertDetail.js";
 
 const RootNav = StackNavigator(
   {
     SendAlert: { screen: SendAlertScreen },
-    InstitutionAlerts: { screen: InstitutionAlertScreen }
+    InstitutionAlerts: { screen: InstitutionAlertScreen },
+    AlertDetail: { screen: AlertDetailScreen }
   },
   {
-    initialRouteName: "SendAlert"
+    initialRouteName: "InstitutionAlerts"
   }
 );
 export default RootNav;

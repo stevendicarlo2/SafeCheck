@@ -5,7 +5,9 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
-  AsyncStorage
+  AsyncStorage,
+  FlatList,
+  Button
 } from "react-native";
 
 class InstitutionAlertScreen extends React.Component {
@@ -32,15 +34,42 @@ class InstitutionAlertScreen extends React.Component {
         .then(response => response.json())
         .then(responseJson => {
           this.setState({
-            data: responseJson["alerts"][0]["id"]
+            data: responseJson["alerts"]
           });
         });
     });
   }
+  renderDetail() {
+    this.props.navigation.navigate("AlertDetail");
+  }
   render() {
     console.log(this.state.data);
-    return <Text>{this.state.data}</Text>;
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={this.state.data}
+          renderItem={({ item }) => (
+            <Button
+              title={item.id.toString()}
+              onPress={() => this.renderDetail()}
+            />
+          )}
+        />
+      </View>
+    );
   }
 }
 
 export default InstitutionAlertScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 22
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44
+  }
+});

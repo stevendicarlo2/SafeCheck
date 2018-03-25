@@ -5,7 +5,8 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
-  AsyncStorage
+  AsyncStorage,
+  Button
 } from "react-native";
 
 class SendAlertScreen extends React.Component {
