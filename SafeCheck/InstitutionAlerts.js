@@ -17,7 +17,6 @@ class InstitutionAlertScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { data: "" };
-    console.log(this.state);
   }
   componentDidMount() {
     this.loadData();
@@ -34,27 +33,34 @@ class InstitutionAlertScreen extends React.Component {
         .then(response => response.json())
         .then(responseJson => {
           this.setState({
-            data: responseJson["alerts"]
+            data: responseJson["alerts"],
+            is_inst: responseJson["inst"]
           });
         });
     });
   }
   renderDetail(item) {
-    this.props.navigation.navigate("AlertDetail", { event: item });
+    this.props.navigation.navigate("AlertDetail", {
+      event: item,
+      inst: this.state.is_inst
+    });
   }
+  _renderItem = ({ item }) =>
+    item.status == "Open" && (
+      <Button
+        title={
+          item.id.toString() +
+          (item.emergency
+            ? " Emergency: " + item.description
+            : " Local: " + item.description)
+        }
+        onPress={() => this.renderDetail(item)}
+      />
+    );
   render() {
-    console.log(this.state.data);
     return (
       <View style={styles.container}>
-        <FlatList
-          data={this.state.data}
-          renderItem={({ item }) => (
-            <Button
-              title={item.id.toString()}
-              onPress={() => this.renderDetail(item)}
-            />
-          )}
-        />
+        <FlatList data={this.state.data} renderItem={this._renderItem} />
       </View>
     );
   }

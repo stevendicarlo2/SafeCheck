@@ -73,14 +73,14 @@ class SendAlertScreen extends React.Component {
             is_inst: responseJson["inst"],
             alerts: responseJson["alerts"]
           });
-          console.log(responseJson["alerts"].length);
         });
     });
   }
 
   show_user_alert() {
     this.props.navigation.navigate("AlertDetail", {
-      event: this.state.alerts[0]
+      event: this.state.alerts[0],
+      inst: this.state.is_inst
     });
   }
 
