@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ActivityIndicator
 } from "react-native";
-import { StackNavigator } from "react-navigation";
 
 class SendAlertScreen extends React.Component {
   static navigationOptions = {
@@ -75,7 +74,6 @@ class SendAlertScreen extends React.Component {
   }
 }
 
-export default SendAlertScreen;
 const styles = StyleSheet.create({
   alertButton: {
     marginRight: 40,
@@ -108,3 +106,4 @@ const styles = StyleSheet.create({
     paddingRight: 10
   }
 });
+export default SendAlertScreen;
