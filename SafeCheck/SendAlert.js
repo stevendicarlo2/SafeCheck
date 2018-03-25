@@ -15,8 +15,8 @@ class SendAlertScreen extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.state = { isLoading: true, data: "" };
-    this.is_inst();
+    this.state = { isLoading: true, data: "", alerts: [] };
+    this.get_alerts();
   }
   get_phone_number() {
     try {
@@ -58,7 +58,7 @@ class SendAlertScreen extends React.Component {
     });
   }
 
-  is_inst() {
+  get_alerts() {
     AsyncStorage.getItem("@MySuperStore:phoneNumber").then(phone => {
       fetch("http://35.227.69.77/api/alert?phone=" + phone, {
         method: "GET",
@@ -70,13 +70,24 @@ class SendAlertScreen extends React.Component {
         .then(response => response.json())
         .then(responseJson => {
           this.setState({
-            is_inst: responseJson["inst"]
+            is_inst: responseJson["inst"],
+            alerts: responseJson["alerts"]
           });
+          console.log(responseJson["alerts"].length);
         });
     });
   }
 
+  show_user_alert() {
+    this.props.navigation.navigate("AlertDetail", {
+      event: this.state.alerts[0]
+    });
+  }
+
   render() {
+    if (this.state.alerts.length > 0 && this.state.alerts[0].status == "Open") {
+      this.show_user_alert();
+    }
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
         <TouchableOpacity

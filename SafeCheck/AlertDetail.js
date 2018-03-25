@@ -13,13 +13,32 @@ class AlertDetailScreen extends React.Component {
   static navigationOptions = {
     title: "This Alert"
   };
+
+  constructor(props) {
+    super(props);
+    console.log(this.props);
+  }
   render() {
     return (
       <View style={styles.container}>
         <Text>Medical Emergency</Text>
-        <Text>second floor balcony</Text>
-        <Text>TOO MUCH CODING</Text>
-        <Text>7245723491385</Text>
+        <Text>
+          Description:{" "}
+          {this.props.navigation.state.params.event.description ? (
+            this.props.navigation.state.params.event.description
+          ) : (
+            "None"
+          )}
+        </Text>
+        <Text>
+          Location Detail:{" "}
+          {this.props.navigation.state.params.event.location_detail ? (
+            this.props.navigation.state.params.event.location_detail
+          ) : (
+            "None"
+          )}
+        </Text>
+        <Text>Phone: {this.props.navigation.state.params.event.phone}</Text>
       </View>
     );
   }
@@ -30,7 +49,9 @@ export default AlertDetailScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22
+    paddingTop: 22,
+    justifyContent: "center",
+    alignItems: "center"
   },
   item: {
     padding: 10,

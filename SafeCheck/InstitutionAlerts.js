@@ -39,8 +39,8 @@ class InstitutionAlertScreen extends React.Component {
         });
     });
   }
-  renderDetail() {
-    this.props.navigation.navigate("AlertDetail");
+  renderDetail(item) {
+    this.props.navigation.navigate("AlertDetail", { event: item });
   }
   render() {
     console.log(this.state.data);
@@ -51,7 +51,7 @@ class InstitutionAlertScreen extends React.Component {
           renderItem={({ item }) => (
             <Button
               title={item.id.toString()}
-              onPress={() => this.renderDetail()}
+              onPress={() => this.renderDetail(item)}
             />
           )}
         />
