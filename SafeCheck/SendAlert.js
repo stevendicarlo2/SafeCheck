@@ -30,21 +30,19 @@ class SendAlertScreen extends React.Component {
     AsyncStorage.getItem("@MySuperStore:phoneNumber").then(phone => {
       navigator.geolocation.getCurrentPosition(
         function(pos) {
-          var params = {
+          var alert = {
             lat: pos.coords.latitude,
             long: pos.coords.longitude,
             phone: phone,
             emergency: emergency
           };
           var formData = [];
-
-          for (var property in params) {
+          for (var property in alert) {
             var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(params[property]);
+            var encodedValue = encodeURIComponent(alert[property]);
             formData.push(encodedKey + "=" + encodedValue);
           }
           formData = formData.join("&");
-
           fetch("http://35.227.69.77/api/alert/", {
             method: "POST",
             headers: {
@@ -53,7 +51,11 @@ class SendAlertScreen extends React.Component {
             },
             body: formData
           });
-        },
+          alert.description = null;
+          alert.status = "Open";
+          this.setState({ alerts: [alert] });
+          this.show_user_alert();
+        }.bind(this),
         function() {}
       );
     });
@@ -92,6 +94,18 @@ class SendAlertScreen extends React.Component {
       ]
     });
     this.props.navigation.dispatch(showUserAlertAction);
+  }
+
+  check_user_alert() {
+    const checkAlertAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: "SendAlert"
+        })
+      ]
+    });
+    this.props.navigation.dispatch(checkAlertAction);
   }
 
   render() {

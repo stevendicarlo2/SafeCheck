@@ -56,7 +56,7 @@ class AlertDetailScreen extends React.Component {
     this.props.navigation.dispatch(showUserAlertAction);
   }
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <View style={styles.container}>
         <Text>Medical Emergency</Text>

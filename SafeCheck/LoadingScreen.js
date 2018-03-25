@@ -65,7 +65,6 @@ class LoadingScreen extends React.Component {
     if (this.state.phoneNumber) {
       return <RootNav />;
     } else {
-      console.log("in no number branch");
       return (
         <TextInput
           style={{ flex: 1 }}
