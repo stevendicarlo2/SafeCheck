@@ -11,6 +11,7 @@ import {
   TextInput
 } from "react-native";
 import { NavigationActions } from "react-navigation";
+import MapView from "react-native-maps";
 
 class AlertDetailScreen extends React.Component {
   static navigationOptions = {
@@ -91,7 +92,7 @@ class AlertDetailScreen extends React.Component {
           />
 
           <Text style={styles.item}>
-            Person to contact: {this.props.navigation.state.params.event.phone}
+            Phone: {this.props.navigation.state.params.event.phone}
           </Text>
 
           <TouchableOpacity
@@ -123,8 +124,26 @@ class AlertDetailScreen extends React.Component {
             )}
           </Text>
           <Text style={styles.item}>
-            Phone: {this.props.navigation.state.params.event.phone}
+            Person to contact: {this.props.navigation.state.params.event.phone}
           </Text>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: this.props.navigation.state.params.event.lat,
+              longitude: this.props.navigation.state.params.event.long,
+              latitudeDelta: 0.002,
+              longitudeDelta: 0.002
+            }}
+          >
+            <MapView.Marker
+              coordinate={{
+                latitude: this.props.navigation.state.params.event.lat,
+                longitude: this.props.navigation.state.params.event.long
+              }}
+              title="Test"
+              description="Test"
+            />
+          </MapView>
         </View>
       );
     }
@@ -136,6 +155,16 @@ export default AlertDetailScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 22,
+    alignItems: "center"
+  },
+  container2: {
+    flex: 3,
+    paddingTop: 22,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  container3: {
     paddingTop: 22,
     justifyContent: "center",
     alignItems: "center"
@@ -162,5 +191,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingLeft: 10,
     paddingRight: 10
+  },
+  map: {
+    position: "absolute",
+    top: 180,
+    bottom: 0,
+    left: 0,
+    right: 0
   }
 });
