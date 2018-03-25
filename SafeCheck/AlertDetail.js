@@ -76,22 +76,22 @@ class AlertDetailScreen extends React.Component {
       return (
         <View style={styles.container}>
           <TextInput
-            style={{ flex: 2 }}
+            style={styles.item}
             placeholder={"Please enter description"}
             value={this.state.description && this.state.description}
             onChangeText={text => this.setState({ description: text })}
             onSubmitEditing={() => this.update_alert()}
           />
           <TextInput
-            style={{ flex: 2 }}
+            style={styles.item}
             placeholder="Please enter Location Detail"
             value={this.state.locationDetail && this.state.locationDetail}
             onChangeText={text => this.setState({ locationDetail: text })}
             onSubmitEditing={() => this.update_alert()}
           />
 
-          <Text>
-            Person to contact:{this.props.navigation.state.params.event.phone}
+          <Text style={styles.item}>
+            Person to contact: {this.props.navigation.state.params.event.phone}
           </Text>
 
           <TouchableOpacity

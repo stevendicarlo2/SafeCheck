@@ -96,43 +96,47 @@ class SendAlertScreen extends React.Component {
     this.props.navigation.dispatch(showUserAlertAction);
   }
 
-  check_user_alert() {
-    const checkAlertAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: "SendAlert"
-        })
-      ]
+  show_inst_alert() {
+    this.props.navigation.navigate("AlertDetail", {
+      event: this.state.alerts[0],
+      inst: this.state.is_inst
     });
-    this.props.navigation.dispatch(checkAlertAction);
   }
 
   render() {
     if (this.state.alerts.length > 0 && this.state.alerts[0].status == "Open") {
-      this.show_user_alert();
+      if (this.state.is_inst) {
+        this.show_inst_alert();
+      } else {
+        this.show_user_alert();
+      }
     }
-    return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <TouchableOpacity
-          style={styles.alertButton}
-          title="Local"
-          onPress={() => {
-            this.sendAlert(false);
-          }}
-        >
-          <Text style={styles.alertText}>Local</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.redButton}
-          title="Emergency"
-          onPress={() => {
-            this.sendAlert(true);
-          }}
-        >
-          <Text style={styles.alertText}>Emergency</Text>
-        </TouchableOpacity>
-        {this.state.is_inst && (
+    if (!this.state.is_inst) {
+      return (
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <TouchableOpacity
+            style={styles.alertButton}
+            title="Local"
+            onPress={() => {
+              this.sendAlert(false);
+            }}
+          >
+            <Text style={styles.alertText}>Local</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.redButton}
+            title="Emergency"
+            onPress={() => {
+              this.sendAlert(true);
+            }}
+          >
+            <Text style={styles.alertText}>Emergency</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ flex: 1, justifyContent: "center" }}>
           <TouchableOpacity
             style={styles.institutionButton}
             title="Institution"
@@ -142,12 +146,11 @@ class SendAlertScreen extends React.Component {
           >
             <Text style={styles.alertText}>Institution</Text>
           </TouchableOpacity>
-        )}
-      </View>
-    );
+        </View>
+      );
+    }
   }
 }
-
 const styles = StyleSheet.create({
   alertButton: {
     marginRight: 40,
