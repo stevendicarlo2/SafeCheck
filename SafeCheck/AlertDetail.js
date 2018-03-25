@@ -7,7 +7,8 @@ import {
   ActivityIndicator,
   AsyncStorage,
   FlatList,
-  Button
+  Button,
+  TextInput
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 
@@ -18,14 +19,23 @@ class AlertDetailScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      phone: this.props.navigation.state.params.event.phone,
+      description: this.props.navigation.state.params.event.description,
+      locationDetail: this.props.navigation.state.params.event.location_detail,
+      status: this.props.navigation.state.params.event.status
+    };
+    console.log(this.props.navigation.state.params.event);
   }
   componentWillReceiveProps() {}
 
-  close_alert() {
+  update_alert() {
     AsyncStorage.getItem("@MySuperStore:phoneNumber").then(phone => {
       var params = {
-        phone: phone,
-        status: "Closed"
+        phone: this.state.phone,
+        status: this.state.status,
+        location_detail: this.state.locationDetail,
+        description: this.state.description
       };
       var formData = [];
 
@@ -35,7 +45,6 @@ class AlertDetailScreen extends React.Component {
         formData.push(encodedKey + "=" + encodedValue);
       }
       formData = formData.join("&");
-
       fetch("http://35.227.69.77/api/alert?" + phone, {
         method: "PUT",
         headers: {
@@ -43,8 +52,15 @@ class AlertDetailScreen extends React.Component {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         body: formData
-      });
+      }).bind(this);
     });
+  }
+
+  close_alert() {
+    this.setState({
+      status: "Closed"
+    });
+    this.update_alert();
     const showUserAlertAction = NavigationActions.reset({
       index: 0,
       actions: [
@@ -56,29 +72,28 @@ class AlertDetailScreen extends React.Component {
     this.props.navigation.dispatch(showUserAlertAction);
   }
   render() {
-    // console.log(this.props);
-    return (
-      <View style={styles.container}>
-        <Text>Medical Emergency</Text>
-        <Text>
-          Description:{" "}
-          {this.props.navigation.state.params.event.description ? (
-            this.props.navigation.state.params.event.description
-          ) : (
-            "None"
-          )}
-        </Text>
-        <Text>
-          Location Detail:{" "}
-          {this.props.navigation.state.params.event.location_detail ? (
-            this.props.navigation.state.params.event.location_detail
-          ) : (
-            "None"
-          )}
-        </Text>
-        <Text>Phone: {this.props.navigation.state.params.event.phone}</Text>
+    if (!this.props.navigation.state.params.inst) {
+      return (
+        <View style={styles.container}>
+          <TextInput
+            style={{ flex: 2 }}
+            placeholder={"Please enter description"}
+            value={this.state.description && this.state.description}
+            onChangeText={text => this.setState({ description: text })}
+            onSubmitEditing={() => this.update_alert()}
+          />
+          <TextInput
+            style={{ flex: 2 }}
+            placeholder="Please enter Location Detail"
+            value={this.state.locationDetail && this.state.locationDetail}
+            onChangeText={text => this.setState({ locationDetail: text })}
+            onSubmitEditing={() => this.update_alert()}
+          />
 
-        {!this.props.navigation.state.params.inst && (
+          <Text>
+            Person to contact:{this.props.navigation.state.params.event.phone}
+          </Text>
+
           <TouchableOpacity
             style={styles.redButton}
             title="Close Alert"
@@ -86,9 +101,32 @@ class AlertDetailScreen extends React.Component {
           >
             <Text style={styles.alertText}>Close</Text>
           </TouchableOpacity>
-        )}
-      </View>
-    );
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <Text>Medical Emergency</Text>
+          <Text>
+            Description:{" "}
+            {this.props.navigation.state.params.event.description ? (
+              this.props.navigation.state.params.event.description
+            ) : (
+              "None"
+            )}
+          </Text>
+          <Text>
+            Location Detail:{" "}
+            {this.props.navigation.state.params.event.location_detail ? (
+              this.props.navigation.state.params.event.location_detail
+            ) : (
+              "None"
+            )}
+          </Text>
+          <Text>Phone: {this.props.navigation.state.params.event.phone}</Text>
+        </View>
+      );
+    }
   }
 }
 
