@@ -17,8 +17,9 @@ class AlertDetailScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props);
   }
+  componentWillReceiveProps() {}
+
   close_alert() {
     AsyncStorage.getItem("@MySuperStore:phoneNumber").then(phone => {
       var params = {
@@ -45,6 +46,7 @@ class AlertDetailScreen extends React.Component {
     });
   }
   render() {
+    console.log(this.props);
     return (
       <View style={styles.container}>
         <Text>Medical Emergency</Text>

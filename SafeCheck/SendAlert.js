@@ -8,6 +8,7 @@ import {
   AsyncStorage,
   Button
 } from "react-native";
+import { NavigationActions } from "react-navigation";
 
 class SendAlertScreen extends React.Component {
   static navigationOptions = {
@@ -78,10 +79,19 @@ class SendAlertScreen extends React.Component {
   }
 
   show_user_alert() {
-    this.props.navigation.navigate("AlertDetail", {
-      event: this.state.alerts[0],
-      inst: this.state.is_inst
+    const showUserAlertAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: "AlertDetail",
+          params: {
+            event: this.state.alerts[0],
+            inst: this.state.is_inst
+          }
+        })
+      ]
     });
+    this.props.navigation.dispatch(showUserAlertAction);
   }
 
   render() {
