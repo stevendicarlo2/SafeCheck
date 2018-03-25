@@ -15,7 +15,7 @@ class SendAlertScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { isLoading: true, data: "" };
-    console.log(this.state);
+    this.is_inst();
   }
   get_phone_number() {
     try {
@@ -56,6 +56,25 @@ class SendAlertScreen extends React.Component {
       );
     });
   }
+
+  is_inst() {
+    AsyncStorage.getItem("@MySuperStore:phoneNumber").then(phone => {
+      fetch("http://35.227.69.77/api/alert?phone=" + phone, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+        .then(response => response.json())
+        .then(responseJson => {
+          this.setState({
+            is_inst: responseJson["inst"]
+          });
+        });
+    });
+  }
+
   render() {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
@@ -76,8 +95,18 @@ class SendAlertScreen extends React.Component {
           }}
         >
           <Text style={styles.alertText}>Emergency</Text>
-          <Text>{this.state.data}</Text>
         </TouchableOpacity>
+        {this.state.is_inst && (
+          <TouchableOpacity
+            style={styles.institutionButton}
+            title="Institution"
+            onPress={() => {
+              this.props.navigation.navigate("InstitutionAlerts");
+            }}
+          >
+            <Text style={styles.alertText}>Institution</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
@@ -113,6 +142,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingLeft: 10,
     paddingRight: 10
+  },
+  institutionButton: {
+    marginRight: 40,
+    marginLeft: 40,
+    marginTop: 10,
+    marginBottom: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: "green",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#fff"
   }
 });
 export default SendAlertScreen;

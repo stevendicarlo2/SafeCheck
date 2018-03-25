@@ -31,7 +31,6 @@ class InstitutionAlertScreen extends React.Component {
       })
         .then(response => response.json())
         .then(responseJson => {
-          console.log(responseJson);
           this.setState({
             data: responseJson["alerts"][0]["id"]
           });

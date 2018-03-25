@@ -16,7 +16,7 @@ const RootNav = StackNavigator(
     InstitutionAlerts: { screen: InstitutionAlertScreen }
   },
   {
-    initialRouteName: "InstitutionAlerts"
+    initialRouteName: "SendAlert"
   }
 );
 export default RootNav;

@@ -61,10 +61,6 @@ class LoadingScreen extends React.Component {
     }
   }
 
-  transition() {
-    this.props.navigation.navigate("SendAlert");
-  }
-
   render() {
     if (this.state.phoneNumber) {
       return <RootNav />;
